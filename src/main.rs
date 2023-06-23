@@ -1,8 +1,11 @@
 
 
-use std::{process::Command, path::Path};
-
 use clap::Parser;
+use codew::context::Context;
+
+use crate::operations::workspace;
+
+mod operations;
 
 #[derive(Parser, Debug)]
 #[clap(
@@ -15,22 +18,11 @@ struct Args {
 }
 
 fn main() {
-    // let arg: Args = Args::parse();
-    // println!("{}", arg.path);
+    let arg: Args = Args::parse();
+    println!("path: {}", arg.path);
 
-    let path = Path::new("/Users/bisquit/.codew/workspaces/rpget.code-workspace");
+    let codew_home_dir = Context::get_codew_home_dir();
+    println!("codew home: {:?}", codew_home_dir.unwrap().as_os_str());
 
-    let home_dir = dirs::home_dir();
-    if let Some(home_dir) = home_dir {
-        let codew_home_dir = home_dir.join(".codew");
-        println!("{}", codew_home_dir.to_str().unwrap());
-    }
-
-    // println!("{}", homedir.unwrap().into_os_string());
-
-    // run code command
-    // Command::new("code")
-    //     .arg(path)
-    //     .spawn()
-    //     .expect("failed");
+    workspace::open_workspace();
 }
